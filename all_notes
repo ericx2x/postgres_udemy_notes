@@ -334,3 +334,68 @@ INSERT INTO movie_revenues (revenue_id, movie_id, domestic_takings, internationa
 SELECT * FROM movie_revenues
 ORDER BY domestic_takings
 LIMIT 3;
+
+
+
+-- Database: movies_data
+
+-- DROP DATABASE movies_data;
+
+CREATE DATABASE movies_data
+    WITH 
+    OWNER = postgres
+    ENCODING = 'UTF8'
+    LC_COLLATE = 'C'
+    LC_CTYPE = 'C'
+    TABLESPACE = pg_default
+    CONNECTION LIMIT = -1;
+	
+	
+	
+select * from actors where date_of_birth IS NULL;
+	
+select * from actors where date_of_birth IS NOT NULL;
+
+select * from movie_revenues
+where domestic_takings is not null
+order by domestic_takings desc;
+
+
+--replaces last_name from being the column title to surname to be the column title
+select last_name as surname from directors;
+
+--errors because surname doesnt' replaces last_name value but only returns the data query differently
+select last_name as surname from directors
+where surname = 'Anderson';
+
+--allows surname for order by. This is because where clause is run first, then select is run, and final thing is order by.
+select last_name as surname from directors
+where last_name LIKE 'A%'
+order by surname;
+
+--concatonated two strings together
+SELECT 'concat' || 'together' AS new_string;
+SELECT 'concat' || ' ' || 'together' AS new_string;
+
+SELECT CONCAT(first_name, last_name) AS full_name FROM actors;
+
+SELECT CONCAT(first_name, ':', last_name) AS full_name FROM actors;
+
+SELECT CONCAT_WS(', ', first_name, last_name, date_of_birth) AS full_name FROM actors;
+
+
+--top 3 movies with highest international takings
+SELECT * FROM movie_revenues
+where international_takings is not null
+ORDER BY international_takings desc
+LIMIT 3;
+
+--concat first_name and last name from directors and rename column to fullname
+SELECT CONCAT_WS(' ', first_name, last_name) as full_name FROM directors;
+
+--the actors where firstname or date of birth is null
+SELECT * from actors
+where first_name is null
+or date_of_birth is null;
+
+
