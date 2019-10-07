@@ -399,3 +399,122 @@ where first_name is null
 or date_of_birth is null;
 
 
+--aggregate function. Adds up all the rows for a specific select
+select count(*) from movie_revenues;
+
+--returns a lesser number because of null values in the specified select column
+select count(international_takings) from movie_revenues;
+
+select count(*) from movies
+where movie_lang = 'English';
+
+select sum(domestic_takings) from movie_revenues
+where domestic_takings > 100.0;
+
+select sum(movie_length) from movies
+where movie_lang = 'Chinese';
+
+--errors. we can't do this on anything besides a number.
+select sum(movie_name) from movies;
+
+
+select max(movie_length) from movies;
+select min(movie_length) from movies;
+
+select min(movie_length) from movies
+where movie_lang = 'Japanese';
+
+--selects the last/latest release_date from the movies table
+select max(release_date) from movies;
+
+--select the oldest release_date
+select min(release_date) from movies;
+
+--selects the movie name thats is towards the end of the alphabetical order in the list
+select max(movie_name) from movies;
+
+--returns a numeric despite all values being integers
+select avg(movie_length) from movies;
+
+select avg(movie_length) from movies
+where age_certificate = '18';
+
+select count(*) from actors
+where date_of_birth > '01-01-1970';
+
+select max(domestic_takings) from movie_revenues;
+select min(domestic_takings) from movie_revenues;
+
+select sum(movie_length) from movies
+where age_certificate = '15';
+
+select count(*) from directors
+where nationality = 'Japanese';
+
+select avg(movie_length) from movies
+where movie_lang = 'Chinese';
+
+--shows two columns. One for movie_lang and one for the count of movie_langs. This is how we can group data by a certain column
+select movie_lang, count(movie_lang) from movies
+group by movie_lang;
+
+select movie_lang, avg(movie_length) from movies
+group by movie_lang;
+
+--returns distrinct variations between the two selected columns and has a avg movie length for each
+select movie_lang, age_certificate, avg(movie_length) from movies
+group by movie_lang, age_certificate;
+
+select movie_lang, age_certificate, avg(movie_length) from movies
+where movie_length > 120
+group by movie_lang, age_certificate;
+
+--every row where age = 15 give the min and max length
+select movie_lang, min(movie_length), max(movie_length) from movies
+where age_certificate = '15'
+group by movie_lang;
+
+--having is used as where but for aggregate functions return values. where would give an error here.
+select movie_lang, count(movie_lang) from movies
+group by movie_lang
+having count(movie_lang) > 1;
+
+select movie_lang, count(movie_lang) from movies
+where movie_length > 120
+group by movie_lang
+having count(movie_lang) > 1;
+
+select nationality, count(nationality) from directors
+group by nationality;
+
+select movie_length, age_certificate, sum(movie_length) from movies
+group by movie_length, age_certificate;
+
+
+--quiz return the movie languages which have a sum total movie length of over 500 minutes.
+select movie_lang, sum(movie_length) from movies
+group by movie_lang
+having sum(movie_length) > 500;
+
+
+--mathematical operators
+select 5 + 6 as addition;
+select 8 - 3 as subtraction;
+select 30 / 3 as division;
+select 4 * 6 as multiplicatoin;
+
+--returns the integer 11 not a numeric
+select 35 / 3 as division;
+
+--returns the remainder, 3.
+select 15 % 4 as modulous;
+
+--returns two columns, movie_id and total_takings (other two added) - careful as if either is null their addition will be null
+select movie_id, (domestic_takings + international_takings) as total_takings from movie_revenues;
+
+
+
+
+
+
+
