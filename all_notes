@@ -518,3 +518,19 @@ select movie_id, (domestic_takings + international_takings) as total_takings fro
 
 
 
+--this is a junction table to provide many to many relationship
+select * from movies_actors;
+
+/*QUIZ:
+what type of relationship is there between pets and owners table?
+a: one owner to many pets based on the table structure. an owner can have many pets but a pet can only have one owner based on table structure.
+
+we make a new table called addresses to go with the owners table. what type of relationship is this?
+--I think this can be a many to many with a junction table since there is no foreign key in their example. yep. it can get this complex but it could also be one to one..
+
+in a spotify database, there's songs, playlists, and users tables. What's the relationship types between these tables?
+playlists->users = many playlists to one user
+songs->playists = many to many
+/*
+
+	
