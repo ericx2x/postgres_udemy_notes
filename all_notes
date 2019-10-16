@@ -561,8 +561,121 @@ INSERT INTO directors (first_name, last_name, date_of_birth, nationality)
 VALUES ('Christopher', 'Nolan', '1970-07-30', 'British');
 
 
+SELECT directors.director_id, directors.first_name, directors.last_name, movies.movie_name
+FROM directors
+INNER JOIN movies ON directors.director_id = movies.director_id;
 
-SELECT d.first_name, d.last_name, mo.movie_name FROM directors directors
-JOIN movies mo ON d.director_id = m.director_id
+
+SELECT directors.director_id, directors.first_name, directors.last_name, movies.movie_name
+FROM directors
+INNER JOIN movies ON directors.director_id = movies.director_id
+WHERE movies.movie_lang = 'Japanese'
+ORDER BY movies.movie_length;
+
+--inner joins don't care which table is table 2 or table 2 so the above query we can swap directors and movies.
+--inner join can default to just join since it's the most common type of query in sql
+
+
+--short hand way of writing the above query
+SELECT d.director_id, d.first_name, d.last_name, m.movie_name
 FROM directors d
-WHERE m.movie_lang = 'Japanese' OR m.movie_lang = 'Chinese' OR m.movie_lang = 'Korean';
+JOIN movies m ON d.director_id = m.director_id
+WHERE m.movie_lang = 'Japanese'
+ORDER BY m.movie_length;
+
+
+SELECT mo.movie_name, mr.domestic_takings, mr.international_takings FROM movies mo
+JOIN movie_revenues mr ON mo.movie_id = mr.movie_id
+ORDER BY mr.domestic_takings;
+
+-- INNER JOINS : PART 3
+
+-- ONLY WHEN THE JOINING COLUMS HAVE THE SAME NAME !
+
+/*
+SELECT t1.column1, t1.column2, t2.column1 FROM table1 t1
+JOIN table2 t2 USING (column3);
+*/
+
+SELECT mo.movie_name, mr.domestic_takings FROM movies mo
+JOIN movie_revenues mr USING (movie_id)
+WHERE mo.age_certificate IN ('12','15','18')
+ORDER BY mr.domestic_takings DESC;
+
+--QUIZ
+
+--1. Select the directors first and last names, the movie names, and release dates for all chinese, korean, and Japanese movies.
+SELECT d.first_name, d.last_name, m.movie_name, m.release_date
+FROM directors d
+JOIN movies m ON d.director_id = m.director_id
+WHERE m.movie_lang IN ('Japanese', 'Korean', 'Chinese');
+--WHERE m.movie_lang = 'Japanese' OR m.movie_lang = 'Chinese' OR m.movie_lang = 'Korean';
+--above where was wrong. Should hacve used WHERE m.movie_lang IN ('Chinese', 'Korean', Japanese); isntead of  WHERE m.movie_lang = 'Japanese' OR m.movie_lang = 'Chinese' OR m.movie_lang = 'Korean';
+
+SELECT mo.movie_name, mo.release_date, mr.international_takings
+FROM movies mo
+JOIN movie_revenues mr ON mo.movie_id = mr.movie_id
+WHERE mo.movie_lang = 'English';
+
+SELECT mo.movie_name, mr.domestic_takings, mr.international_takings
+FROM movies mo
+JOIN movie_revenues mr ON mo.movie_id = mr.movie_id
+WHERE mr.domestic_takings IS NULL OR mr.international_takings IS NULL
+ORDER BY mo.movie_name;
+--Slightly wrong didn't need FULL JOIN. Still worked though.
+
+
+
+--LEFT JOINS
+
+/*
+SELECT t1.column1, t1.column2, t2.column1 FROM table1 t1
+LEFT JOIN table2 t2 on t1.column3 = t2.column3;
+*/
+
+
+--returns even Christopher Nolan (the guy inserted who has no data in the movies table )
+SELECT d.director_id, d.first_name, d.last_name, mo.movie_name FROM directors d
+LEFT JOIN movies mo ON d.director_id = mo.director_id;
+
+--doesn't return Christopher Nolan
+SELECT d.director_id, d.first_name, d.last_name, mo.movie_name FROM directors d
+RIGHT JOIN movies mo ON d.director_id = mo.director_id;
+
+--returns christopher Nolan
+SELECT d.director_id, d.first_name, d.last_name, mo.movie_name FROM movies mo
+RIGHT JOIN directors d ON d.director_id = mo.director_id;
+
+--arbitraty where clause
+SELECT d.director_id, d.first_name, d.last_name, mo.movie_name FROM movies mo
+RIGHT JOIN directors d ON d.director_id = mo.director_id
+WHERE mo.age_certificate = '18';
+
+-- FULL OUTER JOINS
+/*
+SELECT t1.column1, t1.column2, t2.column1 FROM table1 t1
+FULL JOIN table2 t2 ON t1.column3 = t2.column3;
+*/
+
+--returns everyone + Christopher Nolan the below syntax is no different if you swap table 1 and table 2
+SELECT d.director_id, d.first_name, d.last_name, mo.movie_name FROM movies mo
+FULL JOIN directors d ON d.director_id = mo.director_id;
+
+--arbitraty where clause
+SELECT d.director_id, d.first_name, d.last_name, mo.movie_name FROM movies mo
+FULL JOIN directors d ON d.director_id = mo.director_id
+WHERE mo.age_certificate IN ('15','18')
+ORDER BY d.last_name;
+
+--QUIZ
+
+--1. USE a left join to select the first and last names of all British directors and the names and age certificates of the movies that they directed.
+SELECT d.first_name, d.last_name, mo.movie_name, mo.age_certificate FROM directors d
+LEFT JOIN movies mo ON d.director_id = mo.director_id
+WHERE d.nationality = 'British';
+
+--2. Count the number of movies that each directors has directed.
+select d.first_name, d.last_name, count(mo.movie_id) from directors d
+JOIN movies mo ON d.director_id = mo.director_id
+group by d.first_name, d.last_name;
+--slightly wrong should have been a left join to get all the directors..
