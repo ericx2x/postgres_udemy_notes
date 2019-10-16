@@ -553,6 +553,8 @@ SELECT table1.column1, table1.column2, table2.column1 FROM table1
 INNER JOIN table2 ON table1.column3 = table2.column3;
 */
 
+--Think of a ven diagram for left, right and inner joins
+
 SELECT * FROM directors;
 
 INSERT INTO directors (first_name, last_name, date_of_birth, nationality)
