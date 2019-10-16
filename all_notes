@@ -7,7 +7,7 @@ FROM
 INNER JOIN
   authors
 ON
-  books.author_id = authors.id
+  books.author_id = authors.id 
 WHERE
   books.title = 'The Hobbit'
 
@@ -557,3 +557,10 @@ SELECT * FROM directors;
 
 INSERT INTO directors (first_name, last_name, date_of_birth, nationality)
 VALUES ('Christopher', 'Nolan', '1970-07-30', 'British');
+
+
+
+SELECT d.first_name, d.last_name, mo.movie_name FROM directors directors
+JOIN movies mo ON d.director_id = m.director_id
+FROM directors d
+WHERE m.movie_lang = 'Japanese' OR m.movie_lang = 'Chinese' OR m.movie_lang = 'Korean';
