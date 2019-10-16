@@ -534,3 +534,26 @@ songs->playists = many to many
 /*
 
 	
+ /* inner join returns the data of the first table and the second but only for id that the left table shares with the right table*/<br />
+<img src="https://i.imgur.com/tMuEFY5.png" /><br /><br />
+
+/*left join returns the data of the first table and the second table but will show blanks for any id that the left table has that the right table doesn't*/<br />
+<img src="https://i.imgur.com/CBjw41f.png" /><br /><br />
+
+/*right join returns are opposite of left joins*/<br />
+<img src="https://i.imgur.com/5crhzMQ.png" /><br />
+
+/*full joins are like both a left join and a right join. They return every row from both tables but show null values for table-ids that don't match(primary and foreign)*/<br />
+<img src="https://i.imgur.com/H0Nwppt.png" /><br />
+ 
+--innerjoins part1
+
+/*
+SELECT table1.column1, table1.column2, table2.column1 FROM table1
+INNER JOIN table2 ON table1.column3 = table2.column3;
+*/
+
+SELECT * FROM directors;
+
+INSERT INTO directors (first_name, last_name, date_of_birth, nationality)
+VALUES ('Christopher', 'Nolan', '1970-07-30', 'British');
