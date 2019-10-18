@@ -730,3 +730,61 @@ GROUP BY d.first_name, d.last_name
 ORDER BY dom_tak DESC
 LIMIT 1;
 --Got the above problem wrong because it will not sum domestic_takings together if you're trying to group by domestic_takings. Rather it will show each domestic_takings individually (since you're telling it to give you each individual domestic_takings) and not sum them at all.
+
+--Union
+
+--Union combines similar data in two separate tables if their data is of similar type.
+
+/*
+SELECT column1, column2 FROM table1
+UNION
+SELECT column1, column2, FROM table2;
+*/
+
+SELECT first_name, last_name FROM directors
+UNION
+SELECT first_name, last_name FROM actors;
+
+SELECT first_name, last_name, date_of_birth FROM directors
+WHERE nationality = 'American'
+UNION
+SELECT first_name, last_name, date_of_birth FROM actors
+WHERE gender = 'F'
+ORDER BY first_name;
+
+--Union All
+--Does not remove duplicate values
+
+/*
+SELECT column1, column2 FROM table1
+UNION ALL
+SELECT column1, column2 FROM table2;
+*/
+
+SELECT first_name FROM directors
+UNION ALL
+SELECT first_name FROM actors
+ORDER BY first_name;
+
+--Quiz
+
+1. Select the first names, last names and dates of birth from directors and actors. Order the results by the date of birth.
+
+SELECT first_name, last_name, date_of_birth FROM directors
+UNION
+SELECT first_name, last_name, date_of_birth FROM actors
+ORDER BY date_of_birth;
+
+
+2. Select the first and lats names of all directors and actors born in the 1960s. Order the results by last name.
+
+SELECT first_name, last_name FROM directors
+WHERE date_of_birth BETWEEN '1960-01-01' AND '1969-12-31'
+UNION
+SELECT first_name, last_name FROM actors
+WHERE date_of_birth > '1960-01-01' AND date_of_birth < '1970-01-01'
+ORDER BY last_name;
+
+/* got above slightly off because didn't use between originally. Instead you used which is longer way of writing it out.
+WHERE date_of_birth > '1960-01-01' AND date_of_birth < '1970-01-01'
+*/
