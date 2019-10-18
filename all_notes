@@ -704,6 +704,29 @@ JOIN movies_actors ma ON ac.actor_id = ma.actor_id
 JOIN movies mo ON mo.movie_id = ma.movie_id
 WHERE mo.movie_lang = 'English';
 
+SELECT d.first_name, d.last_name, mo.movie_name, ac.first_name, ac.last_name,
+mr.domestic_takings, mr.international_takings FROM directors d
+JOIN movies mo ON d.director_id = mo.director_id
+JOIN movies_actors ma ON ma.movie_id = mo.movie_id
+JOIN actors ac ON ac.actor_id = ma.actor_id
+JOIN movie_revenues mr ON mr.movie_id = mo.movie_id;
+
+--1. Select the first and last names of all the actors who have starred in movies directed by Wes Anderson.
+
+SELECT ac.first_name, ac.last_name FROM directors d
+JOIN movies mo ON d.director_id = mo.director_id
+JOIN movies_actors ma ON ma.movie_id = mo.movie_id
+JOIN actors ac on ac.actor_id = ma.actor_id
+WHERE d.first_name = 'Wes' AND d.last_name = 'Anderson';
 
 
+--2. Which director has the highest total domestic_takings?
 
+SELECT d.first_name, d.last_name, sum(mr.domestic_takings) AS dom_tak FROM directors d
+JOIN movies mo ON mo.director_id = d.director_id
+JOIN movie_revenues mr ON mo.movie_id = mr.movie_id
+WHERE mr.domestic_takings IS NOT NULL
+GROUP BY d.first_name, d.last_name
+ORDER BY dom_tak DESC
+LIMIT 1;
+--Got the above problem wrong because it will not sum domestic_takings together if you're trying to group by domestic_takings. Rather it will show each domestic_takings individually (since you're telling it to give you each individual domestic_takings) and not sum them at all.
