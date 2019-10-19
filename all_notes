@@ -788,3 +788,56 @@ ORDER BY last_name;
 /* got above slightly off because didn't use between originally. Instead you used which is longer way of writing it out.
 WHERE date_of_birth > '1960-01-01' AND date_of_birth < '1970-01-01'
 */
+-- Intersect
+-- Intersect returns only the values which are found in both tables.
+
+/*
+SELECT column1 FROM table1
+INTERSECT
+SELECT column1 FROm table2;
+*/
+
+SELECT first_name FROM directors
+INTERSECT
+SELECT first_name FROM actors;
+
+SELECT first_name FROM directors
+WHERE nationality = 'American'
+INTERSECT
+SELECT first_name FROM actors
+ORDER BY first_name;
+
+-- Except 
+-- Except is the opposite of intersect
+
+/*
+SELECT column1 FROM table1
+EXCEPT
+SELECT column1 FROM table2;
+*/
+
+SELECT first_name FROM directors
+EXCEPT
+SELECT first_name FROM actors;
+
+SELECT first_name FROM directors
+WHERE nationality = 'American'
+EXCEPT
+SELECT first_name FROM actors
+ORDER BY first_name;
+
+--QUIZ
+
+--1. Intersect the first name, last name and date of birth columns in the directors and actors tables.
+
+SELECT first_name, last_name, date_of_birth FROM directors
+INTERSECT
+SELECT first_name, last_name, date_of_birth FROM actors;
+
+--2. Retrieve the first names of male actors unless they have the same first name as any British directors.
+
+SELECT first_name FROM actors
+WHERE gender = 'M'
+EXCEPT
+SELECT first_name FROM directors
+WHERE nationality = 'British';
